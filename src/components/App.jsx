@@ -16,6 +16,14 @@ export class App extends Component {
     filter: '',
   };
 
+  // componentDidMount() {
+  //   const getContacts = localStorage.getItem('contacts');
+
+  //   if (getContacts) {
+  //     this.setState({ contacts: JSON.parse(getContacts) });
+  //   }
+  // }
+
   handleSubmit = object => {
     const { contacts } = this.state;
     this.setState({ contacts: [...contacts, object] });
@@ -45,16 +53,18 @@ export class App extends Component {
     });
   };
 
-  visibileContacts = id => {
-    const { contacts, filter } = this.state;
-    const normalize = filter.toLowerCase();
+  visibleContacts = id => {
+    // const { contacts, filter } = this.state;
+    const contacts = this.state.contacts;
+    const filter = this.state.filter;
+    const normalized = filter.toLowerCase();
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalize)
+      contact.name.toLowerCase().includes(normalized)
     );
   };
 
   render() {
-    const visibileContacts = this.visibileContacts();
+    const visibileContacts = this.visibileContacts;
     console.log(this.state);
     return (
       <div className={s.mainDiv}>
