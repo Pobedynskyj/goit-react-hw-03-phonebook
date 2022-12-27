@@ -16,13 +16,21 @@ export class App extends Component {
     filter: '',
   };
 
-  // componentDidMount() {
-  //   const getContacts = localStorage.getItem('contacts');
+  componentDidMount() {
+    const getStorageContacts = localStorage.getItem('contacts');
 
-  //   if (getContacts) {
-  //     this.setState({ contacts: JSON.parse(getContacts) });
-  //   }
-  // }
+    if (getStorageContacts !== null) {
+      this.setState({
+        contacts: JSON.parse(getStorageContacts),
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   handleSubmit = object => {
     const { contacts } = this.state;
@@ -36,9 +44,9 @@ export class App extends Component {
       alert(`${object.name} is already in contacts `);
     }
 
-    this.setState(prevState => ({
-      contacts: [this.contact, ...prevState.contacts],
-    }));
+    // this.setState(prevState => ({
+    //   contacts: [this.contact, ...prevState.contacts],
+    // }));
   };
 
   handleDelete = id => {
@@ -53,18 +61,16 @@ export class App extends Component {
     });
   };
 
-  visibleContacts = id => {
-    // const { contacts, filter } = this.state;
-    const contacts = this.state.contacts;
-    const filter = this.state.filter;
-    const normalized = filter.toLowerCase();
+  visibileContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalize = filter.toLowerCase();
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalized)
+      contact.name.toLowerCase().includes(normalize)
     );
   };
 
   render() {
-    const visibileContacts = this.visibileContacts;
+    const visibileContacts = this.visibileContacts();
     console.log(this.state);
     return (
       <div className={s.mainDiv}>
